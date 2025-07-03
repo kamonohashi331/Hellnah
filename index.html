@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Relapse Survey</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fdfdfd;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      transition: background-color 1s ease;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      z-index: 2;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      z-index: 2;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    #ooBtn {
+      background-color: #28a745;
+      color: white;
+    }
+    #hindiBtn {
+      background-color: #dc3545;
+      color: white;
+      position: relative;
+    }
+    iframe {
+      width: 100%;
+      max-width: 360px;
+      height: 640px;
+      border: none;
+      border-radius: 12px;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    #videoContainer {
+      display: none;
+      margin-top: 30px;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+      z-index: 3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #missMoText {
+      color: white;
+      font-size: 2rem;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay"><div id="missMoText">Miss mo?</div></div>
+  <h1 id="question">Naalala mo ba siya gabi-gabi?</h1>
+  <div class="buttons">
+    <button id="ooBtn">Oo</button>
+    <button id="hindiBtn">Hindi</button>
+  </div>
+  <div id="videoContainer">
+    <iframe id="ytVideo" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+  <script>
+    const questions = [
+      "Naalala mo ba siya gabi-gabi?",
+      "Tinitignan mo pa rin ba stories niya?",
+      "Gusto mo pa rin siyang balikan?",
+      "Nagpapakatatag ka lang ba?",
+      "Napapangiti ka pa rin pag naaalala mo siya?",
+      "Nagmemessage ka gamit dummy account?",
+      "Pinapakinggan mo ba 'yung playlist n’yong dalawa?",
+      "Iniiwasan mo bang pumunta sa mga lugar n'yong dalawa?",
+      "Insecure ka pa ba kapag may nakikita siyang iba?",
+      "Hindi mo pa rin ba kaya siyang makita?"
+    ];
+
+    const videoLinks = [
+      "https://www.youtube.com/embed/XX0DYSBvCNo",
+      "https://www.youtube.com/embed/gNwEMFIyTS4",
+      "https://www.youtube.com/embed/pzM0IqYZc2k"
+    ];
+
+    let current = 0;
+    const qEl = document.getElementById("question");
+    const oo = document.getElementById("ooBtn");
+    const hi = document.getElementById("hindiBtn");
+    const overlay = document.getElementById("overlay");
+    const missMo = document.getElementById("missMoText");
+    const vidCont = document.getElementById("videoContainer");
+    const yt = document.getElementById("ytVideo");
+
+    function next() {
+      current++;
+      if (current < questions.length) {
+        qEl.textContent = questions[current];
+      } else {
+        qEl.style.display = "none";
+        oo.style.display = "none";
+        hi.style.display = "none";
+        overlay.style.opacity = "1";
+        setTimeout(() => missMo.style.opacity = "1", 1000);
+        setTimeout(() => {
+          const vid = videoLinks[Math.floor(Math.random()*videoLinks.length)];
+          yt.src = vid + "?autoplay=1";
+          vidCont.style.display = "flex";
+          yt.style.opacity = "1";
+        }, 2500);
+      }
+    }
+
+    oo.addEventListener("click", next);
+    hi.addEventListener("mouseover", () => {
+      const x = (Math.random()*200 - 100).toFixed();
+      const y = (Math.random()*200 - 100).toFixed();
+      hi.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    hi.addEventListener("touchstart", e => {
+      e.preventDefault();
+      const x = (Math.random()*200 - 100).toFixed();
+      const y = (Math.random()*200 - 100).toFixed();
+      hi.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  </script>
+</body>
+</html>
